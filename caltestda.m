@@ -236,7 +236,7 @@ ind(objeto)=[];
 xt=X(ind,:);
 yt=Y(ind,:);
 
-function [model,test]=duplex1(X,k)
+function [model,test]=duplex(X,k)
 % -------------------------------------------------------------------------
 % Function: [model,test]=duplex(X,k)
 % -------------------------------------------------------------------------
@@ -314,3 +314,8 @@ close(h);
 function D=fastdist(x,y)
 % Calculated Euclideam distances between two sets of objetcs
 D=((sum(y'.^2))'*ones(1,size(x,1)))+(ones(size(y,1),1)*(sum(x'.^2)))-2*(y*x');
+
+
+
+
+
