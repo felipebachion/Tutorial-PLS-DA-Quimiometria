@@ -4,15 +4,8 @@ function [model] = my_calc_qt_limits_cal (Xcal,Ycal,Xnew,nvl);
 % INPUT
 % Xcal = Amostras da calibração
 % Ycal = matriz de classes
-% Xnew = Amostras da validação
-% nvl = Número de variaveis latentes
+% Xnew = 
 
-% OUTPUT
-% model = Arquivo estrutura contendo o modelo PLS-DA
-
-% Rotina desenvolvida por Felipe Bachion
-% para maiores informações ou informar erros contate por e-mail
-% felipebachion@gmail.com
 
 [Xce,mX,Xnew_ce]=centrar(Xcal,1,Xnew);		
 	[Yce,mY]=centrar(Ycal,1);
@@ -70,9 +63,15 @@ if n>m
   m   = n;
 end
 Qcont=s;
+%  rescl = jmlimit(0,s,0.95,flag=1);
 t1 = sum(Qcont(0+1:m,1));
 t2 = sum(Qcont(0+1:m,1).^2);
 t3 = sum(Qcont(0+1:m,1).^3);
+
+
+% t1 = sum(Qcont(comp+1:end).^1);
+% t2 = sum(Qcont(comp+1:end).^2);
+% t3 = sum(Qcont(comp+1:end).^3);
 
 ho = 1-2*t1*t3/3/(t2.^2);
 if ho<0.001; ho = 0.001; end
@@ -81,6 +80,28 @@ term1    = ca*sqrt(2*t2*ho.^2)/t1;
 term2    = t2*ho*(ho-1)/(t1.^2);
 qlim = t1*(1+term1+term2).^(1/ho);
 
+
+
+
+% term1 = (ho*ca*(2*t2)^0.5)/t1;
+% term2 = (t2*ho*(ho - 1))/(t1^2);
+% qlim = t1*(term1 + 1 + term2)^(1/ho);
+
+
+%% TEste
+% s = svd(Qcont);
+% s = s.^2/(nvl-1);
+% % s = Qcont;
+% rescl = jmlimit(0,s,0.95);
+% 
+% 
+%  q = sum(Qcont.^2,2);
+%  rescl = chilimit(q,0.95);
+ 
+ 
+ s = svd(Qcont');
+ s = s.^2/(size(Xcal,1)-1);
+ rescl = jmlimit(0,s,0.95);
 
 %% Modelo
 model.T = T;
@@ -105,16 +126,10 @@ plot(model.Thot(classes{i}),model.Qres(classes{i}),'o')
 hold on
 end
 
-
-
-
 % figure;plot(model.Thot,model.Qres,'o')
 % hold on
 vline(model.tlim)
 hline (model.qlim)
 legend ('show')
-xlabel ('Hotelling T^2')
-ylabel ('Resíduos em Q')
-title ('Amostras de Calibração')
 
 end

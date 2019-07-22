@@ -105,7 +105,6 @@ model.Yprev_val=Ynew_hat;
 
 % Plotando para cada classe na calibração
 figure;
-title ('Conjunto de Calibração')
 for i = 1:size(Ycal,2)
 classes{i}=find(Ycal(:,i)==1)
 plot(model.Thot(classes{i}),model.Qres(classes{i}),'o')
@@ -117,16 +116,22 @@ end
 vline(model.tlim)
 hline (model.qlim)
 legend ('show')
+title ('Amostras de Calibração')
+xlabel ('Hotelling T^2')
+ylabel ('Resíduos em Q')
 
 % Plotando para cada classe na validação
 
 
 figure;
-title ('Conjunto de Validação')
 plot(model.Thot_val,model.Qres_val,'o')
 vline(model.tlim)
 hline (model.qlim)
 legend ('Amostras da Validação')
+title ('Amostras de Validação')
+xlabel ('Hotelling T^2')
+ylabel ('Resíduos em Q')
+
 
 
 %% Caso queira plotar a calibração e validação juntas
@@ -134,7 +139,6 @@ legend ('Amostras da Validação')
 % INTEIRO
 % Plotando para cada classe na calibração
 figure;
-title ('Conjunto de Calibração e Validação')
 for i = 1:size(Ycal,2)
 classes{i}=find(Ycal(:,i)==1)
 plot(model.Thot(classes{i}),model.Qres(classes{i}),'o')
@@ -147,4 +151,8 @@ hline (model.qlim)
 hold on
 plot(model.Thot_val,model.Qres_val,'o')
 legend ('show')
+title ('Amostras de Calibração e Validação')
+xlabel ('Hotelling T^2')
+ylabel ('Resíduos em Q')
+
 end
